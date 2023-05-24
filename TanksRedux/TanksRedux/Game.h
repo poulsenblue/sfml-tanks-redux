@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Tank.h"
+#include "Surface.h"
+#include "DebugDraw.h"
 
 
 
@@ -21,7 +23,6 @@ private:
 	// SFML
 	//
 	sf::RenderWindow	mWindow;
-	sf::CircleShape		mPlayer;
 	sf::Clock			mFrameClock;
 
 
@@ -30,11 +31,12 @@ private:
 	//
 	b2Vec2		mGravity;
 	b2World		mWorld;
-
+	DebugDraw	mDebugDrawer;
 	
 
 	// Objects
 	std::vector<Tank*> mPlayers;
+	surface mGround;
 };
 
 int main()

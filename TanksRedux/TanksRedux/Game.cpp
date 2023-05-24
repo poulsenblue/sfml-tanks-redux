@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <box2d/box2d.h>
 #include <SFML/Graphics.hpp>
 
@@ -15,37 +17,33 @@
 
 Game::Game()
 	: mWindow(sf::VideoMode(1280, 1024), "Tanks!")
-	, mPlayer()
 	, mGravity(0.0f, 10.f)
 	, mWorld(mGravity)
 {
 	// Initialize ground
 	// TODO: move this to a method
-	surface ground;
-	ground.DEF.position.Set(640.f / conf::SCALE, 2000.f / conf::SCALE);
-	ground.RECT = sf::RectangleShape(sf::Vector2f(8000.f, 50.f));
-	ground.RECT.setPosition(sf::Vector2f(0.f, 0.f));
-	ground.RECT.setFillColor(sf::Color(200, 75, 20, 255));
-	ground.SHAPE.SetAsBox(4000.0f / conf::SCALE, 25.f / conf::SCALE);
-	ground.BOD = mWorld.CreateBody(&ground.DEF);
-	ground.FIX.shape = &ground.SHAPE;
-	ground.FIX.density = 1.f;
-	ground.FIX.friction = 2.f;
-	ground.BOD->CreateFixture(&ground.SHAPE, 1.0f);
+	mGround.DEF.position.Set(640.f / conf::SCALE, 2000.f / conf::SCALE);
+	mGround.RECT = sf::RectangleShape(sf::Vector2f(8000.f, 50.f));
+	mGround.RECT.setPosition(sf::Vector2f(0.f, 0.f));
+	mGround.RECT.setFillColor(sf::Color(200, 75, 20, 255));
+	mGround.SHAPE.SetAsBox(4000.0f / conf::SCALE, 25.f / conf::SCALE);
+	mGround.BOD = mWorld.CreateBody(&mGround.DEF);
+	mGround.FIX.shape = &mGround.SHAPE;
+	mGround.FIX.density = 1.f;
+	mGround.FIX.friction = 2.f;
+	mGround.BOD->CreateFixture(&mGround.SHAPE, 1.0f);
 
-
-	// Create Player
-	Tank playerTank(mPlayers, mWorld, sf::Vector2f(20.f, 0.f));
 
 	
 
+	
 
+	
 #ifdef DEBUG
 	// Debug
-	DebugDraw debugDrawer;
-	debugDrawer.setRenderWindow(&mWindow);
-	debugDrawer.SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit | b2Draw::e_aabbBit | b2Draw::e_pairBit | b2Draw::e_centerOfMassBit);
-	mWorld.SetDebugDraw(&debugDrawer);
+	mDebugDrawer.setRenderWindow(&mWindow);
+	mDebugDrawer.SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit | b2Draw::e_aabbBit | b2Draw::e_pairBit | b2Draw::e_centerOfMassBit);
+	mWorld.SetDebugDraw(&mDebugDrawer);
 #endif
 
 
@@ -54,8 +52,12 @@ Game::Game()
 
 void Game::run()
 {
+	// Create Player
+	Tank playerTank(mPlayers, mWorld, sf::Vector2f(20.f, 0.f));
+
 	while (mWindow.isOpen())
 	{
+
 		sf::Time frameDelta = mFrameClock.restart();
 
 		mWorld.Step(conf::timeStep, 8, 3);
@@ -63,7 +65,6 @@ void Game::run()
 		processEvents();
 		update();
 		render();
-
 	}
 }
 
@@ -85,13 +86,13 @@ void Game::processEvents()
 				break;
 
 		}
-		if (event.type == sf::Event::Closed)
-			mWindow.close();
 	}
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
+	std::cout << "input: " << std::to_string(key) << std::endl;
+
 	std::vector<Tank*>::iterator iter;
 	for (iter = mPlayers.begin(); iter != mPlayers.end(); iter++)
 	{
@@ -118,12 +119,18 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 void Game::update()
 {
-
+	std::vector<Tank*>::iterator iter;
+	for (iter = mPlayers.begin(); iter != mPlayers.end(); iter++)
+	{
+		(*iter)->update();
+	}
 }
 
 void Game::render()
 {
 	mWindow.clear();
-	mWindow.draw(mPlayer);
+
+	mWorld.DebugDraw();
+
 	mWindow.display();
 }
