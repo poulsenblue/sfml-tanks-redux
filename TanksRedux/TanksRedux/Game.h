@@ -35,7 +35,8 @@ private:
 	
 
 	// Objects
-	std::vector<Tank*> mPlayers;
+	std::vector<surface*>	mSurfaces;
+	std::vector<Tank*>		mPlayers;
 	surface mGround;
 };
 

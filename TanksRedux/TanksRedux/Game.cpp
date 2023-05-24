@@ -7,6 +7,7 @@
 #include "Tank.h"
 #include "Surface.h"
 #include "Config.h"
+#include "PhysicsUtil.h"
 #include "DebugDraw.h"
 
 
@@ -22,18 +23,18 @@ Game::Game()
 {
 	// Initialize ground
 	// TODO: move this to a method
-	mGround.DEF.position.Set(640.f / conf::SCALE, 2000.f / conf::SCALE);
+	mGround.DEF.position.Set(ng::sf_to_b2(500.f, 500.f).x, ng::sf_to_b2(500.f, 500.f).y);
 	mGround.RECT = sf::RectangleShape(sf::Vector2f(8000.f, 50.f));
-	mGround.RECT.setPosition(sf::Vector2f(0.f, 0.f));
+	mGround.RECT.setPosition(640.f, 2000.f);
 	mGround.RECT.setFillColor(sf::Color(200, 75, 20, 255));
-	mGround.SHAPE.SetAsBox(4000.0f / conf::SCALE, 25.f / conf::SCALE);
+	mGround.SHAPE.SetAsBox(4000.0f, 25.f);
 	mGround.BOD = mWorld.CreateBody(&mGround.DEF);
 	mGround.FIX.shape = &mGround.SHAPE;
 	mGround.FIX.density = 1.f;
 	mGround.FIX.friction = 2.f;
 	mGround.BOD->CreateFixture(&mGround.SHAPE, 1.0f);
 
-
+	mSurfaces.push_back(&mGround);
 	
 
 	
@@ -55,6 +56,8 @@ void Game::run()
 	// Create Player
 	Tank playerTank(mPlayers, mWorld, sf::Vector2f(20.f, 0.f));
 
+	
+
 	while (mWindow.isOpen())
 	{
 
@@ -64,6 +67,10 @@ void Game::run()
 
 		processEvents();
 		update();
+
+		mWindow.draw(*playerTank.getShape());
+		
+
 		render();
 	}
 }
@@ -131,6 +138,18 @@ void Game::render()
 	mWindow.clear();
 
 	mWorld.DebugDraw();
+
+	std::vector<surface*>::iterator surf_iter;
+	for (surf_iter = mSurfaces.begin(); surf_iter != mSurfaces.end(); surf_iter++)
+	{
+		mWindow.draw((*surf_iter)->RECT);
+	}
+
+	std::vector<Tank*>::iterator tank_iter;
+	for (tank_iter = mPlayers.begin(); tank_iter != mPlayers.end(); tank_iter++)
+	{
+		mWindow.draw(*(*tank_iter)->getShape());
+	}
 
 	mWindow.display();
 }
