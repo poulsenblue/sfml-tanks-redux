@@ -1,3 +1,4 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <box2d/box2d.h>
 #include "Tank.h"
@@ -8,7 +9,7 @@
 Tank::Tank(std::vector<Tank*> &gamePlayerList, b2World& world, sf::Vector2f pos)
 {
 	position = pos;
-	velocity = sf::Vector2f(0.f, 0.f);
+	velocity = b2Vec2(0.f, 0.f);
 
 	tankShape = new sf::RectangleShape(sf::Vector2f(20.f, 10.f));
 	tankShape->setFillColor(sf::Color::Red);
@@ -27,8 +28,16 @@ Tank::Tank(std::vector<Tank*> &gamePlayerList, b2World& world, sf::Vector2f pos)
 
 void Tank::update()
 {
-	tankShape->setRotation(body->GetAngle());
-	tankShape->setPosition(body->GetPosition().x, body->GetPosition().y);
+	//tankShape->setRotation(body->GetAngle());
+	//tankShape->setPosition(body->GetPosition().x, body->GetPosition().y);
+
+	//std::cout << "mIsMovingRight" << " == " << std::boolalpha << mIsMovingRight << std::endl;
+	//std::cout << "mIsMovingLeft"  << " == " << std::boolalpha << mIsMovingLeft << std::endl;
+
+	if (mIsMovingRight)
+		drive(2.f);
+	if (mIsMovingLeft)
+		drive(-2.f);
 }
 
 void Tank::updatePhysics(sf::Time deltaTime)

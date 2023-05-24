@@ -25,11 +25,12 @@ private:
 	sf::RectangleShape* tankShape;
 
 	sf::Vector2f	position;
-	sf::Vector2f	velocity;
 
 	b2Body*			body;
 	b2BodyDef		bodyDef;
 	b2PolygonShape	bodyShape;
 	b2FixtureDef	bodyFixtureDef;
+
+	b2Vec2			velocity;
 
 };

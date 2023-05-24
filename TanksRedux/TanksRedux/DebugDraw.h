@@ -3,7 +3,7 @@
 class DebugDraw : public b2Draw
 {
 private:
-    sf::RenderWindow* mRenderWindow;
+    sf::RenderWindow*   mRenderWindow;
     float               mThickness = -2.f;
     int                 mTranparency = 50.f;
 public:
