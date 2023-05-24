@@ -37,7 +37,7 @@ private:
 	// Objects
 	std::vector<surface*>	mSurfaces;
 	std::vector<Tank*>		mPlayers;
-	surface mGround;
+	surface					mGround;
 };
 
 int main()

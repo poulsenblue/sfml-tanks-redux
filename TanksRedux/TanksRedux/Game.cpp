@@ -23,11 +23,12 @@ Game::Game()
 {
 	// Initialize ground
 	// TODO: move this to a method
-	mGround.DEF.position.Set(ng::sf_to_b2(500.f, 500.f).x, ng::sf_to_b2(500.f, 500.f).y);
+	mGround.DEF.position.Set(ng::sf_to_b2(500.f, 500.f, conf::SCALE).x, ng::sf_to_b2(500.f, 500.f, conf::SCALE).y);
 	mGround.RECT = sf::RectangleShape(sf::Vector2f(8000.f, 50.f));
-	mGround.RECT.setPosition(640.f, 2000.f);
+	mGround.RECT.setOrigin(4000.f, 25.f);
+	mGround.RECT.setPosition(500.f, 500.f);
 	mGround.RECT.setFillColor(sf::Color(200, 75, 20, 255));
-	mGround.SHAPE.SetAsBox(4000.0f, 25.f);
+	mGround.SHAPE.SetAsBox(4000.0f / conf::SCALE, 25.f / conf::SCALE);
 	mGround.BOD = mWorld.CreateBody(&mGround.DEF);
 	mGround.FIX.shape = &mGround.SHAPE;
 	mGround.FIX.density = 1.f;
