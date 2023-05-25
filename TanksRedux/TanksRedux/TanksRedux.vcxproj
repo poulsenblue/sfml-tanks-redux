@@ -133,15 +133,19 @@
   <ItemGroup>
     <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="TerrainColumn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
     <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="PhysicsUtil.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Tank.h" />
+    <ClInclude Include="TerrainColumn.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

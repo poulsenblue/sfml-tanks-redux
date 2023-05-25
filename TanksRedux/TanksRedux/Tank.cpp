@@ -1,38 +1,37 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <box2d/box2d.h>
 #include "Tank.h"
 #include "Config.h"
 #include "PhysicsUtil.h"
 
 
-Tank::Tank(std::vector<Tank*> &gamePlayerList, b2World& world, sf::Vector2f pos)
+
+
+Tank::Tank(b2World* world, sf::Vector2f position)
+	: mIsMovingLeft(false)
+	, mIsMovingRight(false)
+	, mIsMovingDown(false)
+	, mIsMovingUp(false)
 {
-	position = pos;
-	velocity = b2Vec2(0.f, 0.f);
+	sf::Vector2f size(20.f, 10.f);
 
-	tankShape = new sf::RectangleShape(sf::Vector2f(20.f, 10.f));
+	tankShape = new sf::RectangleShape(size);
+	tankShape->setOrigin(size / 2.f);
 	tankShape->setFillColor(sf::Color::Red);
+	tankShape->setPosition(position);
 
-	bodyDef.position.Set(ng::sf_to_b2(pos, 1.f).x, ng::sf_to_b2(pos, 1.f).y);
-	bodyDef.type = b2_dynamicBody;
-	bodyShape.SetAsBox(10.f / conf::SCALE, 5.f / conf::SCALE);
-	bodyFixtureDef.shape = &bodyShape;
-	bodyFixtureDef.density = 0.3f;
-	bodyFixtureDef.friction = 1.f;
-	body = world.CreateBody(&bodyDef);
-	body->CreateFixture(&bodyFixtureDef);
-
-	gamePlayerList.push_back(this);
+	mBodyShape.SetAsBox(ng::sf_to_b2(size / 2.f, ng::SCALE).x, ng::sf_to_b2(size / 2.f, ng::SCALE).y);
+	mBodyDef.position.Set(ng::sf_to_b2(position, ng::SCALE).x, ng::sf_to_b2(position, ng::SCALE).y);
+	mBodyDef.type = b2_dynamicBody;
+	mBody = world->CreateBody(&mBodyDef);
+	mBodyFixtureDef.shape = &mBodyShape;
+	mBodyFixtureDef.density = 1.f;
+	mBodyFixtureDef.friction = 2.f;
+	mBody->CreateFixture(&mBodyShape, 1.f);
 }
 
 void Tank::update()
 {
-	//tankShape->setRotation(body->GetAngle());
-	//tankShape->setPosition(body->GetPosition().x, body->GetPosition().y);
-
-	//std::cout << "mIsMovingRight" << " == " << std::boolalpha << mIsMovingRight << std::endl;
-	//std::cout << "mIsMovingLeft"  << " == " << std::boolalpha << mIsMovingLeft << std::endl;
+	tankShape->setRotation(mBody->GetAngle());
+	tankShape->setPosition(ng::b2_to_sf(mBody->GetPosition().x, mBody->GetPosition().y, ng::SCALE));
 
 	if (mIsMovingRight)
 		drive(2.f);
@@ -40,30 +39,14 @@ void Tank::update()
 		drive(-2.f);
 }
 
-void Tank::updatePhysics(sf::Time deltaTime)
-{
-	tankShape->setRotation(body->GetAngle());
-	tankShape->setPosition(body->GetPosition().x, body->GetPosition().y);
-}
-
-b2Body* Tank::getBody()
-{
-	return body;
-}
-
 sf::RectangleShape* Tank::getShape()
 {
 	return tankShape;
 }
 
-void Tank::setWorld(b2World& world)
-{
-
-}
-
 void Tank::drive(float magnitude)
 {
-	body->SetLinearVelocity(b2Vec2(magnitude, 0.f));
+	mBody->SetLinearVelocity(b2Vec2(magnitude, 0.f));
 }
 
 

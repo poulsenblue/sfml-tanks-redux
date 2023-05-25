@@ -5,13 +5,12 @@
 
 #include "Game.h"
 #include "Tank.h"
-#include "Surface.h"
+#include "TerrainColumn.h"
 #include "Config.h"
 #include "PhysicsUtil.h"
 #include "DebugDraw.h"
 
-
-#define DEBUG
+//#define DEBUG_DRAW_
 
 
 
@@ -21,57 +20,32 @@ Game::Game()
 	, mGravity(0.0f, 10.f)
 	, mWorld(mGravity)
 {
-	// Initialize ground
-	// TODO: move this to a method
-	mGround.DEF.position.Set(ng::sf_to_b2(500.f, 500.f, conf::SCALE).x, ng::sf_to_b2(500.f, 500.f, conf::SCALE).y);
-	mGround.RECT = sf::RectangleShape(sf::Vector2f(8000.f, 50.f));
-	mGround.RECT.setOrigin(4000.f, 25.f);
-	mGround.RECT.setPosition(500.f, 500.f);
-	mGround.RECT.setFillColor(sf::Color(200, 75, 20, 255));
-	mGround.SHAPE.SetAsBox(4000.0f / conf::SCALE, 25.f / conf::SCALE);
-	mGround.BOD = mWorld.CreateBody(&mGround.DEF);
-	mGround.FIX.shape = &mGround.SHAPE;
-	mGround.FIX.density = 1.f;
-	mGround.FIX.friction = 2.f;
-	mGround.BOD->CreateFixture(&mGround.SHAPE, 1.0f);
-
-	mSurfaces.push_back(&mGround);
 	
-
-	
-
-	
-#ifdef DEBUG
-	// Debug
+#ifdef DEBUG_DRAW_
 	mDebugDrawer.setRenderWindow(&mWindow);
 	mDebugDrawer.SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit | b2Draw::e_aabbBit | b2Draw::e_pairBit | b2Draw::e_centerOfMassBit);
 	mWorld.SetDebugDraw(&mDebugDrawer);
 #endif
-
-
-
 }
 
 void Game::run()
 {
-	// Create Player
-	Tank playerTank(mPlayers, mWorld, sf::Vector2f(20.f, 0.f));
+	TerrainColumn testCol(&mWorld, sf::Vector2f(50.f, 50.f), sf::Vector2f(100.f, 100.f));
+	mGameObjects.push_back(&testCol);
 
-	
+	TerrainColumn ground(&mWorld, sf::Vector2f(1280.f, 50.f), sf::Vector2f(640.f, 1000.f));
+	mGameObjects.push_back(&ground);
+
+	Tank playerTank(&mWorld, sf::Vector2f(300.f, 300.f));
+	mPlayers.push_back(&playerTank);
 
 	while (mWindow.isOpen())
 	{
-
 		sf::Time frameDelta = mFrameClock.restart();
-
 		mWorld.Step(conf::timeStep, 8, 3);
 
 		processEvents();
 		update();
-
-		mWindow.draw(*playerTank.getShape());
-		
-
 		render();
 	}
 }
@@ -138,12 +112,11 @@ void Game::render()
 {
 	mWindow.clear();
 
-	mWorld.DebugDraw();
 
-	std::vector<surface*>::iterator surf_iter;
-	for (surf_iter = mSurfaces.begin(); surf_iter != mSurfaces.end(); surf_iter++)
+	std::vector<GameObject*>::iterator obj_iter;
+	for (obj_iter = mGameObjects.begin(); obj_iter != mGameObjects.end(); obj_iter++)
 	{
-		mWindow.draw((*surf_iter)->RECT);
+		mWindow.draw(*(*obj_iter)->getShape());
 	}
 
 	std::vector<Tank*>::iterator tank_iter;
@@ -151,6 +124,11 @@ void Game::render()
 	{
 		mWindow.draw(*(*tank_iter)->getShape());
 	}
+
+#ifdef DEBUG_DRAW_
+	mWorld.DebugDraw();
+#endif
+
 
 	mWindow.display();
 }

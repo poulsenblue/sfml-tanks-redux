@@ -1,5 +1,6 @@
 #ifndef PHYSICSUTIL_H_
 #define PHYSICSUTIL_H_
+// Took this from NeroGames, hope that's okay - https://nero-games.com/learn/box2d/sfml-integration/
 #include <SFML/Graphics.hpp>
 #include <box2d/box2d.h>
 

@@ -1,3 +1,5 @@
+// Took this from NeroGames, hope that's okay - https://nero-games.com/learn/box2d/sfml-integration/
+
 ///////////////////////////HEADERS//////////////////////////
 //Box2D
 #include <Box2D/box2d.h>
