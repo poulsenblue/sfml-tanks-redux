@@ -10,7 +10,7 @@
 #include "PhysicsUtil.h"
 #include "DebugDraw.h"
 
-//#define DEBUG_DRAW_
+#define DEBUG_DRAW_
 
 
 
