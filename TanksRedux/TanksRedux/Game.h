@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Tank.h"
-#include "Surface.h"
+#include "GameObject.h"
 #include "DebugDraw.h"
 
 
@@ -9,15 +9,19 @@
 
 class Game
 {
+
 public:
+
 	Game();
 	void	run();
 
 private:
+
 	void	processEvents();
 	void	handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 	void	update();
 	void	render();
+
 
 	//
 	// SFML
@@ -35,9 +39,9 @@ private:
 	
 
 	// Objects
-	std::vector<surface*>	mSurfaces;
-	std::vector<Tank*>		mPlayers;
-	surface					mGround;
+	std::vector<GameObject*>	mGameObjects;
+	std::vector<Tank*>			mPlayers;
+
 };
 
 int main()

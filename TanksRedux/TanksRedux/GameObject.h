@@ -1,30 +1,24 @@
 #pragma once
 
 
-template <typename T>
+
+
 class GameObject
 {
-	static_assert(std::is_base_of<sf::Shape>::value; "GameObject type must derive from sf::Shape");
 
 public:
 
 	GameObject();
 
-	void update();
-	b2Body* getBody();
-	T* getShape();
+	virtual void			update();
+	virtual sf::Shape*		getShape() = 0;
 
 
-private:
+protected:
 
-	T*				objectShape;
-
-	b2Body*			body;
-	b2BodyDef		bodyDef;
-	b2PolygonShape	bodyShape;
-	b2FixtureDef	bodyFixtureDef;
-
-	b2Vec2			velocity;
-	b2Vec2			position;
+	b2Body*				mBody;
+	b2BodyDef			mBodyDef;
+	b2PolygonShape		mBodyShape;
+	b2FixtureDef		mBodyFixtureDef;
 
 };

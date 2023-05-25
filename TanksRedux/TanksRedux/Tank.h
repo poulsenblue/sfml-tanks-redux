@@ -1,19 +1,24 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+#include <box2d/box2d.h>
+#include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
-class Tank
+
+
+
+class Tank : public GameObject
 {
 
-
 public:
-	Tank(std::vector<Tank*>& gamePlayerList, b2World& world, sf::Vector2f pos);
-	void update();
-	void updatePhysics(sf::Time deltaTime);
-	b2Body* getBody();
-	sf::RectangleShape* getShape();
-	void setWorld(b2World& world);
 
-	void drive(float magnitude);
+	Tank(b2World* world, sf::Vector2f position);
+	
+	void					update();
+	sf::RectangleShape*		getShape();
+
+	void					drive(float magnitude);
 
 	bool mIsMovingUp;
 	bool mIsMovingDown;
@@ -22,15 +27,7 @@ public:
 
 
 private:
+
 	sf::RectangleShape* tankShape;
-
-	sf::Vector2f	position;
-
-	b2Body*			body;
-	b2BodyDef		bodyDef;
-	b2PolygonShape	bodyShape;
-	b2FixtureDef	bodyFixtureDef;
-
-	b2Vec2			velocity;
 
 };
