@@ -30,7 +30,7 @@ Game::Game()
 
 void Game::run()
 {
-	TerrainColumn testCol(&mWorld, sf::Vector2f(50.f, 50.f), sf::Vector2f(100.f, 100.f));
+	TerrainColumn testCol(&mWorld, sf::Vector2f(20.f, 500.f), sf::Vector2f(0, 774.f));
 	mGameObjects.push_back(&testCol);
 
 	TerrainColumn ground(&mWorld, sf::Vector2f(1280.f, 50.f), sf::Vector2f(640.f, 1000.f));
@@ -39,13 +39,25 @@ void Game::run()
 	Tank playerTank(&mWorld, sf::Vector2f(300.f, 300.f));
 	mPlayers.push_back(&playerTank);
 
+	sf::Clock frameClock;
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
 	while (mWindow.isOpen())
 	{
 		sf::Time frameDelta = mFrameClock.restart();
-		mWorld.Step(conf::timeStep, 8, 3);
+		
 
 		processEvents();
-		update();
+
+		// Catch-up loop to update physics consistently independent of framerate
+		timeSinceLastUpdate += frameClock.restart();
+		while (timeSinceLastUpdate > sf::seconds(conf::timeStep)) 
+		{
+			timeSinceLastUpdate -= sf::seconds(conf::timeStep);
+			processEvents();
+			update();
+		}
+
 		render();
 	}
 }
@@ -101,6 +113,10 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 void Game::update()
 {
+	// Step the physics engine
+	mWorld.Step(conf::timeStep, 8, 3);
+
+	// Call update on every player
 	std::vector<Tank*>::iterator iter;
 	for (iter = mPlayers.begin(); iter != mPlayers.end(); iter++)
 	{

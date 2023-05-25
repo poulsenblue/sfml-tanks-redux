@@ -17,7 +17,7 @@ TerrainColumn::TerrainColumn(b2World* world, sf::Vector2f size, sf::Vector2f pos
 	mBody = world->CreateBody(&mBodyDef);
 	mBodyFixtureDef.shape = &mBodyShape;
 	mBodyFixtureDef.density = 1.f;
-	mBodyFixtureDef.friction = 2.f;
+	mBodyFixtureDef.friction = 1.f;
 	mBody->CreateFixture(&mBodyShape, 1.f);
 }
 

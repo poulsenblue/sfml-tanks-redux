@@ -143,7 +143,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="PhysicsUtil.h" />
-    <ClInclude Include="Surface.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="TerrainColumn.h" />
   </ItemGroup>
