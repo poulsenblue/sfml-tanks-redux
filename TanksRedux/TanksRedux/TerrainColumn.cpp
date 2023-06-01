@@ -5,6 +5,8 @@
 #include "TerrainColumn.h"
 
 
+
+
 TerrainColumn::TerrainColumn(b2World* world, sf::Vector2f size, sf::Vector2f position)
 {
 	mShape = new sf::RectangleShape(size);

@@ -28,6 +28,17 @@ public:
 
 private:
 
-	sf::RectangleShape* tankShape;
+	sf::RectangleShape*		hullShape;
+	sf::CircleShape*		wheel1Shape;
+	sf::RectangleShape*		wheel2Shape;
+
+	const float				wheelRadius = 10.f;
+	const sf::Vector2f		wheelPosition;
+
+	// Wheel body
+	b2Body*				mWheel1Body;
+	b2BodyDef			mWheel1BodyDef;
+	b2CircleShape		mWheel1BodyShape;
+	b2FixtureDef		mWheel1BodyFixtureDef;
 
 };

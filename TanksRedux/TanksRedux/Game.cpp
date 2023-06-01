@@ -36,6 +36,13 @@ void Game::run()
 	TerrainColumn ground(&mWorld, sf::Vector2f(1280.f, 50.f), sf::Vector2f(640.f, 1000.f));
 	mGameObjects.push_back(&ground);
 
+	for (int i = 0; i < 20; i++)
+	{
+		sf::Vector2f size = sf::Vector2f(float(i) * 60.f, 200.f - float(i) * 10.f);
+
+		mGameObjects.push_back(new TerrainColumn(&mWorld, size, sf::Vector2f(640.f, 970.f)));
+	}
+
 	Tank playerTank(&mWorld, sf::Vector2f(300.f, 300.f));
 	mPlayers.push_back(&playerTank);
 
