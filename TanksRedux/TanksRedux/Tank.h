@@ -33,7 +33,8 @@ private:
 	sf::RectangleShape*		wheel2Shape;
 
 	const float				wheelRadius = 10.f;
-	const sf::Vector2f		wheelPosition;
+	const sf::Vector2f		wheelPosition = sf::Vector2f(-10.f, -5.f);
+	const sf::Vector2f		tankSize = sf::Vector2f(20.f, 10.f);
 
 	// Wheel body
 	b2Body*				mWheel1Body;

@@ -42,6 +42,9 @@ private:
 	std::vector<GameObject*>	mGameObjects;
 	std::vector<Tank*>			mPlayers;
 
+
+	sf::VertexArray     terrain;
+
 };
 
 int main()

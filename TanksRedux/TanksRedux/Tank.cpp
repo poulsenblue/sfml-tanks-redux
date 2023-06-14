@@ -11,10 +11,10 @@ Tank::Tank(b2World* world, sf::Vector2f position)
 	, mIsMovingDown(false)
 	, mIsMovingUp(false)
 {
-	sf::Vector2f size(20.f, 10.f);
+	sf::Vector2f tankSize(20.f, 10.f);
 
-	hullShape = new sf::RectangleShape(size);
-	hullShape->setOrigin(size / 2.f);
+	hullShape = new sf::RectangleShape(tankSize);
+	hullShape->setOrigin(tankSize / 2.f);
 	hullShape->setFillColor(sf::Color::Red);
 	hullShape->setPosition(position);
 	
@@ -23,7 +23,7 @@ Tank::Tank(b2World* world, sf::Vector2f position)
 	wheel1Shape->setFillColor(sf::Color::White);
 	wheel1Shape->setPosition(hullShape->getOrigin() + wheelPosition);
 
-	mBodyShape.SetAsBox(ng::sf_to_b2(size / 2.f, ng::SCALE).x, ng::sf_to_b2(size / 2.f, ng::SCALE).y);
+	mBodyShape.SetAsBox(ng::sf_to_b2(tankSize / 2.f, ng::SCALE).x, ng::sf_to_b2(tankSize / 2.f, ng::SCALE).y);
 	mBodyDef.position.Set(ng::sf_to_b2(position, ng::SCALE).x, ng::sf_to_b2(position, ng::SCALE).y);
 	mBodyDef.type = b2_dynamicBody;
 	mBody = world->CreateBody(&mBodyDef);
@@ -32,7 +32,7 @@ Tank::Tank(b2World* world, sf::Vector2f position)
 	mBodyFixtureDef.friction = 2.f;
 	mBody->CreateFixture(&mBodyShape, 1.f);
 
-	mWheel1BodyShape.m_p.Set(2.0f, 3.0f);
+	mWheel1BodyShape.m_p.Set(ng::sf_to_b2(position.x + wheelPosition.x, position.y + wheelPosition.y).x, ng::sf_to_b2(position.x + wheelPosition.x, position.y + wheelPosition.y).y);
 	mWheel1BodyShape.m_radius = 0.5f;
 	mWheel1BodyDef.position.Set(ng::sf_to_b2(position + wheelPosition, ng::SCALE).x, ng::sf_to_b2(position = wheelPosition, ng::SCALE).y);
 	mWheel1BodyDef.type = b2_dynamicBody;

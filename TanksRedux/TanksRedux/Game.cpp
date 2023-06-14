@@ -9,8 +9,9 @@
 #include "Config.h"
 #include "PhysicsUtil.h"
 #include "DebugDraw.h"
+//#include "PerlinNoise.hpp"
 
-#define DEBUG_DRAW_
+//a#define DEBUG_DRAW_
 
 
 
@@ -19,6 +20,7 @@ Game::Game()
 	: mWindow(sf::VideoMode(1280, 1024), "Tanks!")
 	, mGravity(0.0f, 10.f)
 	, mWorld(mGravity)
+	, terrain(sf::TriangleStrip, 20)
 {
 	
 #ifdef DEBUG_DRAW_
@@ -36,11 +38,28 @@ void Game::run()
 	TerrainColumn ground(&mWorld, sf::Vector2f(1280.f, 50.f), sf::Vector2f(640.f, 1000.f));
 	mGameObjects.push_back(&ground);
 
+
+
 	for (int i = 0; i < 20; i++)
 	{
-		sf::Vector2f size = sf::Vector2f(float(i) * 60.f, 200.f - float(i) * 10.f);
+		int peak = i % 2;
 
-		mGameObjects.push_back(new TerrainColumn(&mWorld, size, sf::Vector2f(640.f, 970.f)));
+		sf::Vector2f pos;
+
+		if (peak == 0)
+		{
+			pos = sf::Vector2f(float(i) * 64.f, 1024.f - float(i) * 20.f);
+
+			terrain[i] = sf::Vertex(pos, sf::Color::Green);
+		}
+		else
+		{
+			pos = sf::Vector2f(float(i - 1) * 64.f, 1024.f);
+
+			terrain[i] = sf::Vertex(pos, sf::Color::Green);
+		}
+
+		std::cout << "placed vertex at (" << pos.x << ", " << pos.y << ")" << std::endl;
 	}
 
 	Tank playerTank(&mWorld, sf::Vector2f(300.f, 300.f));
@@ -147,6 +166,8 @@ void Game::render()
 	{
 		mWindow.draw(*(*tank_iter)->getShape());
 	}
+
+	mWindow.draw(this->terrain);
 
 #ifdef DEBUG_DRAW_
 	mWorld.DebugDraw();
