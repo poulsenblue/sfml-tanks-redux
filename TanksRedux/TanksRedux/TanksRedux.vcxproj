@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\dev\box2d\testbed;C:\dev\box2d\src\..\include;C:\dev\box2d\extern\glfw\include;C:\dev\box2d\extern\imgui\..;C:\dev\box2d\extern\sajson\..;C:\dev\box2d\extern\glad\include;C:\dev\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\PerlinNoise;C:\dev\box2d\testbed;C:\dev\box2d\src\..\include;C:\dev\box2d\extern\glfw\include;C:\dev\box2d\extern\imgui\..;C:\dev\box2d\extern\sajson\..;C:\dev\box2d\extern\glad\include;C:\dev\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,6 +136,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="TerrainColumn.cpp" />
+    <ClCompile Include="VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="PhysicsUtil.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="TerrainColumn.h" />
+    <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
